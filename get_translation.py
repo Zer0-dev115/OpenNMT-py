@@ -5,28 +5,27 @@ from pydub import AudioSegment
 import os
 
 
-def change_extension(filename,uploaded_file,ext):
+def change_extension(filepath_audio,uploaded_filename,ext):
     if ext == ".mp3":
-        song = AudioSegment.from_file(uploaded_file, format="mp3")
-        sourcewav=os.path.splitext(uploaded_file)[0]
+        song = AudioSegment.from_file(uploaded_filename, format="mp3")
+        sourcewav=os.path.splitext(uploaded_filename)[0]
         uploaded_file = '%s.wav'%sourcewav
         song.export(os.getcwd()+uploaded_file,format = "wav")
         filename = os.getcwd()+uploaded_file
     elif ext == ".flac":
-        song = AudioSegment.from_file(uploaded_file, format="flac")
+        song = AudioSegment.from_file(uploaded_filename, format="flac")
         sourcewav=os.path.splitext(uploaded_file)[0]
         uploaded_file = '%s.wav'%sourcewav
         song.export(os.getcwd()+uploaded_file,format = "wav")
         filename = os.getcwd()+uploaded_file
     elif ext == ".wav":
-        filename = filename
+        filename = filepath_audio
     else:
         print("file is not in acceptable format(wav,flac,mp3)")
-    return filename, uploaded_file
+    return filename
 
 def sampling(filename,uploaded_file):
     y, sr = torchaudio.load(filename)
-    global outfile
     if sr == 16000:
         outfile = filename
         print("sample rate correct.")
@@ -37,10 +36,10 @@ def sampling(filename,uploaded_file):
         print("sample rate changed successfully.")
     return outfile
 
-def segmentation(filename):
+def segmentation(outfile):
     audio = AudioSegment.from_wav(outfile)
     n = len(audio)
-    if n <= 20000:
+    if n <= 19000:
         with open(os.getcwd()+"/trans.txt", 'w') as f:
             f.write(outfile)
             f.close()
@@ -75,11 +74,9 @@ def segmentation(filename):
     os.system('python3 translate.py -data_type audio -model models/demo-model-libri-sgd_step_90000.pt -src_dir translation_data -src trans.txt -output pred.txt -verbose -window_size 0.025 -image_channel_size 1 -beam_size 10 ')
     
     print("speech translation done!!")
-    os.remove(os.getcwd()+"/trans.txt")
-    os.remove(filename)
+    
+    with open(os.getcwd()+"/pred.txt", 'r') as f:
+        line = f.read()
+        return line
     
 
-def main(filename,uploaded_file,ext):
-    change_extension(filename,uploaded_file,ext)
-    sampling(filename,uploaded_file)
-    segmentation(filename)
