@@ -72,7 +72,7 @@ def segmentation(outfile):
                 f.close()
                 print("file created2")
         os.system('python3 translate.py -data_type audio -model models/demo-model-libri-sgd_step_90000.pt -src_dir translation_data -src transmultiple.txt -output pred.txt -verbose -window_size 0.025 -image_channel_size 1 -beam_size 10 ')
-    
+        os.remove(os.getcwd()+"/transmultiple.txt")
     print("speech translation done!!")
     
     with open(os.getcwd()+"/pred.txt", 'r') as f:
