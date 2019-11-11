@@ -3,6 +3,7 @@ import os
 import urllib.request
 from app import app
 from flask import Flask, request, redirect, render_template
+from flask_cors import CORS
 import torch
 import torchaudio
 import librosa
@@ -11,6 +12,7 @@ import os
 import uuid
 from get_translation import main
 
+CORS(app)
 @app.route('/', methods=['POST'])
 def upload_file():
     uploaded_file = request.files['file']
