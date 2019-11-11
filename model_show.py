@@ -10,7 +10,7 @@ import librosa
 from pydub import AudioSegment
 import os
 import uuid
-from get_translation import main
+import get_translation
 
 CORS(app)
 @app.route('/', methods=['POST'])
@@ -25,15 +25,17 @@ def upload_file():
         uploaded_filename = audio_id+ext
     else:
        return "file incompatible"
-    print("file",filepath_audio)
     uploaded_file.save(filepath_audio)
     print("audio_saved")
-
-    main(filepath_audio,uploaded_filename,ext)
+    filename = get_translation.change_extension(filepath_audio,uploaded_filename,ext)
+    upload_filename = audio_id+".wav"
+    outfile = get_translation.sampling(filename,upload_filename)
+    line = get_translation.segmentation(outfile)
     print("file translated")
-    with open(os.getcwd()+"/pred.txt", 'r') as f:
-        line = f.read()
-        return line
+    
+    os.remove(os.getcwd()+"/trans.txt")
+    os.remove(filename)
+    return line
 
 
 if __name__ == "__main__":
