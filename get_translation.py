@@ -44,6 +44,7 @@ def segmentation(outfile):
             f.write(outfile)
             f.close()
             print("file created1")
+        os.system('python3 translate.py -data_type audio -model models/demo-model-libri-sgd_step_90000.pt -src_dir translation_data -src trans.txt -output pred.txt -verbose -window_size 0.025 -image_channel_size 1 -beam_size 10 ')
     else:
         counter = 1
         interval = 10 * 1000
@@ -66,12 +67,11 @@ def segmentation(outfile):
             chunk.export(filename, format="wav")
             counter = counter + 1
 
-            with open(os.getcwd()+"/trans.txt", 'a') as f:
+            with open(os.getcwd()+"/transmultiple.txt", 'a') as f:
                 f.write(filename_chunk)
                 f.close()
                 print("file created2")
-    
-    os.system('python3 translate.py -data_type audio -model models/demo-model-libri-sgd_step_90000.pt -src_dir translation_data -src trans.txt -output pred.txt -verbose -window_size 0.025 -image_channel_size 1 -beam_size 10 ')
+        os.system('python3 translate.py -data_type audio -model models/demo-model-libri-sgd_step_90000.pt -src_dir translation_data -src transmultiple.txt -output pred.txt -verbose -window_size 0.025 -image_channel_size 1 -beam_size 10 ')
     
     print("speech translation done!!")
     
