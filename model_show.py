@@ -34,7 +34,6 @@ def upload_file():
     line = get_translation.segmentation(outfile)
     print("file translated")
 
-    os.remove(os.getcwd()+"/transmultiple.txt")
     os.remove(filename)
     return line
 
