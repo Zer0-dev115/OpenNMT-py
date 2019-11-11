@@ -30,10 +30,11 @@ def upload_file():
     filename = get_translation.change_extension(filepath_audio,uploaded_filename,ext)
     upload_filename = audio_id+".wav"
     outfile = get_translation.sampling(filename,upload_filename)
+    print("outfile",outfile)
     line = get_translation.segmentation(outfile)
     print("file translated")
-    
-    os.remove(os.getcwd()+"/trans.txt")
+
+    #os.remove(os.getcwd()+"/trans.txt")
     os.remove(filename)
     return line
 
