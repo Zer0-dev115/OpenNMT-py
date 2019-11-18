@@ -31,10 +31,10 @@ def upload_file():
     upload_filename = audio_id+".wav"
     outfile = get_translation.sampling(filename,upload_filename)
     print("outfile",outfile)
-    line = get_translation.segmentation(outfile)
+    line = get_translation.segmentation(outfile,audio_id)
     print("file translated")
-
     os.remove(filename)
+    os.remove(os.getcwd()+"/pred%s.txt"%audio_id)
     return line
 
 
