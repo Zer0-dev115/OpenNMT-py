@@ -33,7 +33,6 @@ def upload_file():
     print("outfile",outfile)
     line = get_translation.segmentation(outfile,audio_id)
     print("file translated")
-    os.remove(filename)
     os.remove(os.getcwd()+"/pred%s.txt"%audio_id)
     return line
 
