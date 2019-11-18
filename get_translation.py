@@ -75,7 +75,7 @@ def segmentation(outfile,audio_id):
     
     print("speech translation done!!")
     os.remove(os.getcwd()+"/%s.txt"%audio_id)
-    
+    os.remove(outfile)
     with open(os.getcwd()+"/pred%s.txt"%audio_id, 'r') as f:
         line = f.read()
         return line
